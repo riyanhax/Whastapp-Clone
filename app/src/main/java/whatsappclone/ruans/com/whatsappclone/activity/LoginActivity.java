@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import whatsappclone.ruans.com.whatsappclone.R;
 import whatsappclone.ruans.com.whatsappclone.config.ConfiguracaoFirebase;
+import whatsappclone.ruans.com.whatsappclone.helper.Base64Custom;
+import whatsappclone.ruans.com.whatsappclone.helper.Preferencias;
 import whatsappclone.ruans.com.whatsappclone.model.UsuarioModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button botaoEntrar;
     private UsuarioModel usuario;
     private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAuth();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         if (userAtual != null){
             irParaHome();
         }
-
 
         usuario = new UsuarioModel();
         inputEmail = findViewById(R.id.inputLoginEmail);
@@ -67,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
+                            Preferencias preferencias =  new Preferencias(LoginActivity.this);
+                            preferencias.setID(Base64Custom.encode(usuario.getEmail()));
                             irParaHome();
                         }else{
                             String mensagemErro = "";

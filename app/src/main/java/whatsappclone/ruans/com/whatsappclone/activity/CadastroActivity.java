@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 
 import whatsappclone.ruans.com.whatsappclone.R;
 import whatsappclone.ruans.com.whatsappclone.config.ConfiguracaoFirebase;
+import whatsappclone.ruans.com.whatsappclone.helper.Base64Custom;
+import whatsappclone.ruans.com.whatsappclone.helper.Preferencias;
 import whatsappclone.ruans.com.whatsappclone.model.UsuarioModel;
 
 public class CadastroActivity extends AppCompatActivity {
@@ -74,14 +76,15 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    String idUser = task.getResult().getUser().getUid();
+                    String idUser = Base64Custom.encode(usuario.getEmail());
                     usuario.setId(idUser);
                     usuario.salvar().addOnCompleteListener(CadastroActivity.this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
-                                firebaseAuth.signOut();
-                                voltarActivityLogin(null);
+                                Preferencias preferencias = new Preferencias(CadastroActivity.this);
+                                preferencias.setID(Base64Custom.encode(usuario.getEmail()));
+                                abrirLoginUsuario();
                             }else{
                                 Toast.makeText(getApplicationContext(),"Falha ao realizar cadastro, tente novamente!",Toast.LENGTH_LONG).show();
                             }
@@ -107,7 +110,9 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    public void voltarActivityLogin(View view){
+    public void abrirLoginUsuario(){
+        Intent intent = new Intent(CadastroActivity.this,LoginActivity.class);
+        startActivity(intent);
         finish();
     }
 

@@ -7,4 +7,8 @@
     <string name="lb_confirmar_senha">Confirme sua senha</string>
     <string name="botao_cadastrar">Cadastrar</string>
     <string name="texto_ja_tem_conta">Já possui conta? Faça login!</string>
+    <string name="item_configuracao">Configurações</string>
+    <string name="item_sair">Sair</string>
+    <string name="item_pesquisa">Pesquisa</string>
+    <string name="item_add">Add</string>
 </resources>

@@ -13,6 +13,7 @@ public class Preferencias {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     public static final String CHAVE_ID_USER = "idUser";
+    public static final String CHAVE_NOME_USER = "nomeUser";
     private final String NOME_ARQUIVO = "whatsappClonePreferencias";
     private final int MODE = 0;
 
@@ -29,6 +30,15 @@ public class Preferencias {
 
     public String getId(){
         return preferences.getString(CHAVE_ID_USER,null);
+    }
+
+    public void setNome(String nome){
+        editor.putString(CHAVE_NOME_USER,nome);
+        editor.commit();
+    }
+
+    public String getNome(){
+        return preferences.getString(CHAVE_NOME_USER,null);
     }
 
 

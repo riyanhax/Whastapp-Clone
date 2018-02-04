@@ -20,6 +20,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import whatsappclone.ruans.com.whatsappclone.R;
 import whatsappclone.ruans.com.whatsappclone.config.ConfiguracaoFirebase;
@@ -34,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button botaoEntrar;
     private UsuarioModel usuario;
     private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAuth();
+    private DatabaseReference databaseReference = ConfiguracaoFirebase.getFirebaseDatabase();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +72,29 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Preferencias preferencias =  new Preferencias(LoginActivity.this);
-                            preferencias.setID(Base64Custom.encode(usuario.getEmail()));
-                            irParaHome();
+
+                            databaseReference
+                                    .child("usuarios")
+                                    .child(Base64Custom.encode(usuario.getEmail()))
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            UsuarioModel usuarioModel = dataSnapshot.getValue(UsuarioModel.class);
+
+                                            Preferencias preferencias =  new Preferencias(LoginActivity.this);
+                                            preferencias.setID(Base64Custom.encode(usuarioModel.getEmail()));
+                                            preferencias.setNome(usuarioModel.getNome());
+                                            irParaHome();
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
                         }else{
                             String mensagemErro = "";
                             try{

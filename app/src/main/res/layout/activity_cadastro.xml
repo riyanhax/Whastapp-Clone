@@ -96,7 +96,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:onClick="voltarActivityLogin"
+        android:onClick="abrirLoginUsuario"
         android:text="@string/texto_ja_tem_conta"
         android:textColor="@color/textColorPrimary"
         android:textSize="18dp"

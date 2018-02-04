@@ -84,7 +84,8 @@ public class CadastroActivity extends AppCompatActivity {
                             if (task.isSuccessful()){
                                 Preferencias preferencias = new Preferencias(CadastroActivity.this);
                                 preferencias.setID(Base64Custom.encode(usuario.getEmail()));
-                                abrirLoginUsuario();
+                                preferencias.setNome(usuario.getNome());
+                                abrirLoginUsuario(null);
                             }else{
                                 Toast.makeText(getApplicationContext(),"Falha ao realizar cadastro, tente novamente!",Toast.LENGTH_LONG).show();
                             }
@@ -110,7 +111,7 @@ public class CadastroActivity extends AppCompatActivity {
         });
     }
 
-    public void abrirLoginUsuario(){
+    public void abrirLoginUsuario(View view){
         Intent intent = new Intent(CadastroActivity.this,LoginActivity.class);
         startActivity(intent);
         finish();
